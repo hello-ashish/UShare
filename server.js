@@ -4,17 +4,8 @@ import { Server } from 'socket.io';
 import cors from 'cors';
 import os from 'os';
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
 app.use(cors());
-
-// Serve the compiled React static files (Vite build)
-app.use(express.static(path.join(__dirname, 'dist')));
 
 const server = createServer(app);
 const io = new Server(server, {
@@ -68,11 +59,7 @@ io.on('connection', (socket) => {
   });
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-});
-
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 const localIp = getLocalIp();
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`Signaling server running on port ${PORT}`);
