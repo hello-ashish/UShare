@@ -40,7 +40,16 @@ function Sender() {
   useEffect(() => {
     if (qrRef.current && roomId && status === 'waiting') {
       qrRef.current.innerHTML = '';
-      const url = `http://${localIp}:5173/receive/${roomId}`;
+      
+      let baseUrl = window.location.origin;
+      // If we are testing on loopback locally, use the external network IP and Vite port for the mobile device
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        const port = window.location.port || '5173';
+        baseUrl = `http://${localIp}:${port}`;
+      }
+      
+      const url = `${baseUrl}/receive/${roomId}`;
+      
       if (window.QRCode) {
         new window.QRCode(qrRef.current, {
           text: url,
