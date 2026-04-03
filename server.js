@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
 });
 
 // React Router fallback: serve index.html for all non-API paths
-app.get('*', (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
